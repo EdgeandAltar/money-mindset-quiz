@@ -401,7 +401,7 @@ const MoneyMindsetQuiz = () => {
         position: 'relative',
         zIndex: 1
       }}>
-        {!showEmailCapture && !showResults && (
+        {!showResults && (
           <div style={{
             animation: 'fadeInUp 0.6s ease-out'
           }}>
