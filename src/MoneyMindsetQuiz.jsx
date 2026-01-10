@@ -242,28 +242,29 @@ const MoneyMindsetQuiz = () => {
   setIsSubmitting(true);
 
   try {
-    // Submit directly to Kit's hosted form
-    const formData = new URLSearchParams();
-    formData.append('email_address', email);
-    if (name) formData.append('first_name', name);
-    formData.append('fields[quiz_result]', resultTypes[result].type);
-
-    await fetch('https://app.kit.com/forms/8958357/subscriptions', {
+    // Send to Make.com webhook
+    const response = await fetch('8acc5mh0dqreue468hatjd2cgeujjjbu@hook.us2.make.com', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      body: formData.toString()
+      body: JSON.stringify({
+        email: email,
+        name: name,
+        result: resultTypes[result].type
+      })
     });
 
-    setShowEmailCapture(false);
-    setShowResults(true);
+    if (response.ok) {
+      setShowEmailCapture(false);
+      setShowResults(true);
+    } else {
+      throw new Error('Webhook failed');
+    }
     
   } catch (error) {
     console.error('Error:', error);
-    // Show results anyway since we can't verify with no-cors
-    setShowEmailCapture(false);
-    setShowResults(true);
+    alert('Something went wrong. Please try again.');
   } finally {
     setIsSubmitting(false);
   }
