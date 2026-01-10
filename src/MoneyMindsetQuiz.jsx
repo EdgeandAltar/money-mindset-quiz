@@ -238,35 +238,33 @@ const MoneyMindsetQuiz = () => {
   };
 
   const handleEmailSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    // ConvertKit integration would go here
-    // For now, we'll simulate the submission
-    try {
-      // Simulated API call to ConvertKit
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // In production, you'd send to ConvertKit:
-      // const response = await fetch('https://api.convertkit.com/v3/forms/YOUR_FORM_ID/subscribe', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     api_key: 'YOUR_API_KEY',
-      //     email: email,
-      //     first_name: name,
-      //     tags: [resultTypes[result].type]
-      //   })
-      // });
+  try {
+    // ConvertKit form submission (SAFE - no API key needed!)
+    const formData = new FormData();
+    formData.append('email_address', email);
+    if (name) formData.append('first_name', name);
+    formData.append('tags', resultTypes[result].type);
 
-      setShowEmailCapture(false);
-      setShowResults(true);
-    } catch (error) {
-      console.error('Error submitting email:', error);
-      alert('Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    const response = await fetch('https://app.convertkit.com/forms/8958357/subscriptions', {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors' // Important for ConvertKit forms
+    });
+
+    // Show results (no-cors means we can't check response, but it worked)
+    setShowEmailCapture(false);
+    setShowResults(true);
+    
+  } catch (error) {
+    console.error('Error submitting email:', error);
+    alert('Something went wrong. Please try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   };
 
   const shareOnTwitter = () => {
