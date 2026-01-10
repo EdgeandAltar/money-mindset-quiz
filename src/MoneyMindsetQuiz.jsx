@@ -243,7 +243,7 @@ const MoneyMindsetQuiz = () => {
 
   try {
     // Send to Make.com webhook
-    const response = await fetch('8acc5mh0dqreue468hatjd2cgeujjjbu@hook.us2.make.com', {
+    const response = await fetch(8acc5mh0dqreue468hatjd2cgeujjjbu@hook.us2.make.com, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
