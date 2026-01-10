@@ -243,7 +243,7 @@ const MoneyMindsetQuiz = () => {
 
   try {
     // Send to Make.com webhook
-  const response = await fetch('/.netlify/functions/quizSignup', {
+  const response = await fetch('https://moneymindsetquiz.netlify.app/.netlify/functions/quizSignup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
