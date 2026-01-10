@@ -237,37 +237,37 @@ const MoneyMindsetQuiz = () => {
     setResult(topResult);
   };
 
-  const handleEmailSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+ const handleEmailSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    try {
-      // Create form data for ConvertKit
-      const formData = new FormData();
-      formData.append('email_address', email);
-      if (name) formData.append('first_name', name);
-      
-      // Add quiz result as a custom field
-      formData.append('fields[quiz_result]', resultTypes[result].type);
+  try {
+    // Submit directly to Kit's hosted form
+    const formData = new URLSearchParams();
+    formData.append('email_address', email);
+    if (name) formData.append('first_name', name);
+    formData.append('fields[quiz_result]', resultTypes[result].type);
 
-      // Submit to ConvertKit form (replace YOUR_FORM_ID with your actual form ID)
-     await fetch('https://app.convertkit.com/forms/8958357/subscriptions', {
-        method: 'POST',
-        body: formData,
-        mode: 'no-cors'
-      });
+    await fetch('https://app.kit.com/forms/8958357/subscriptions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData.toString()
+    });
 
-      // Show results page
-      setShowEmailCapture(false);
-      setShowResults(true);
-      
-    } catch (error) {
-      console.error('Error submitting to ConvertKit:', error);
-      alert('Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    setShowEmailCapture(false);
+    setShowResults(true);
+    
+  } catch (error) {
+    console.error('Error:', error);
+    // Show results anyway since we can't verify with no-cors
+    setShowEmailCapture(false);
+    setShowResults(true);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const shareOnTwitter = () => {
     const text = `I just discovered I'm a ${resultTypes[result].type}! Take the Money Mindset Quiz to find yours:`;
