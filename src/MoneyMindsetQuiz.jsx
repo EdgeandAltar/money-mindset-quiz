@@ -200,12 +200,8 @@ const MoneyMindsetQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
-  const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
   const [result, setResult] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleAnswer = (value) => {
     setSelectedOption(value);
@@ -221,7 +217,7 @@ const MoneyMindsetQuiz = () => {
         setCurrentQuestion(currentQuestion + 1);
       } else {
         calculateResult(newAnswers);
-        setShowEmailCapture(true);
+        setShowResults(true);
       }
     }
   };
@@ -236,39 +232,6 @@ const MoneyMindsetQuiz = () => {
     const topResult = Object.keys(counts).find(key => counts[key] === maxCount);
     setResult(topResult);
   };
-
- const handleEmailSubmit = async (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-
-  try {
-    // Send to Make.com webhook
-  const response = await fetch('https://moneymindsetquiz.netlify.app/.netlify/functions/quizSignup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        name: name,
-        result: resultTypes[result].type
-      })
-    });
-
-    if (response.ok) {
-      setShowEmailCapture(false);
-      setShowResults(true);
-    } else {
-      throw new Error('Webhook failed');
-    }
-    
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Something went wrong. Please try again.');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
 
   const shareOnTwitter = () => {
     const text = `I just discovered I'm a ${resultTypes[result].type}! Take the Money Mindset Quiz to find yours:`;
@@ -595,127 +558,6 @@ const MoneyMindsetQuiz = () => {
               >
                 {currentQuestion < questions.length - 1 ? 'Next Question' : 'See My Results'}
               </button>
-            </div>
-          </div>
-        )}
-
-        {showEmailCapture && !showResults && (
-          <div style={{
-            animation: 'fadeInUp 0.6s ease-out',
-            maxWidth: '600px',
-            margin: '0 auto'
-          }}>
-            <div style={{
-              background: 'rgba(255,255,255,0.8)',
-              borderRadius: '24px',
-              padding: '56px',
-              backdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5)',
-              border: '1px solid rgba(255,255,255,0.3)',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                display: 'inline-block',
-                marginBottom: '24px',
-                padding: '16px',
-                background: 'linear-gradient(135deg, rgba(107,68,35,0.1) 0%, rgba(139,69,19,0.1) 100%)',
-                borderRadius: '50%'
-              }}>
-                <Sparkles size={48} style={{ color: '#6B4423' }} />
-              </div>
-              
-              <h2 style={{
-                fontFamily: "'Crimson Pro', serif",
-                fontSize: '36px',
-                fontWeight: 700,
-                color: '#3D2817',
-                marginBottom: '16px',
-                letterSpacing: '-0.5px'
-              }}>
-                Get Your Personalized Results
-              </h2>
-              
-              <p style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '18px',
-                color: '#5D4E37',
-                marginBottom: '40px',
-                lineHeight: 1.6
-              }}>
-                Enter your email to unlock your Money Mindset Type + custom action plan
-              </p>
-
-              <form onSubmit={handleEmailSubmit}>
-                <input
-                  type="text"
-                  placeholder="First name (optional)"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '16px 20px',
-                    marginBottom: '16px',
-                    fontFamily: "'Manrope', sans-serif",
-                    fontSize: '16px',
-                    border: '2px solid rgba(107,68,35,0.2)',
-                    borderRadius: '12px',
-                    background: 'rgba(255,255,255,0.9)',
-                    color: '#3D2817',
-                    boxSizing: 'border-box'
-                  }}
-                />
-                
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '16px 20px',
-                    marginBottom: '24px',
-                    fontFamily: "'Manrope', sans-serif",
-                    fontSize: '16px',
-                    border: '2px solid rgba(107,68,35,0.2)',
-                    borderRadius: '12px',
-                    background: 'rgba(255,255,255,0.9)',
-                    color: '#3D2817',
-                    boxSizing: 'border-box'
-                  }}
-                />
-                
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="cta-button"
-                  style={{
-                    width: '100%',
-                    padding: '18px',
-                    fontFamily: "'Manrope', sans-serif",
-                    fontSize: '18px',
-                    fontWeight: 600,
-                    background: 'linear-gradient(135deg, #6B4423 0%, #8B4513 100%)',
-                    color: '#F5E6D3',
-                    border: 'none',
-                    borderRadius: '12px',
-                    cursor: isSubmitting ? 'wait' : 'pointer',
-                    boxShadow: '0 4px 16px rgba(107,68,35,0.3)'
-                  }}
-                >
-                  {isSubmitting ? 'Getting Your Results...' : 'Show Me My Results'}
-                </button>
-              </form>
-
-              <p style={{
-                fontFamily: "'Manrope', sans-serif",
-                fontSize: '13px',
-                color: '#8B7355',
-                marginTop: '24px',
-                lineHeight: 1.5
-              }}>
-                We respect your privacy. Unsubscribe anytime. No spam, just practical magic.
-              </p>
             </div>
           </div>
         )}
