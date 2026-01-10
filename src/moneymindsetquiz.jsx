@@ -251,7 +251,7 @@ const MoneyMindsetQuiz = () => {
       formData.append('fields[quiz_result]', resultTypes[result].type);
 
       // Submit to ConvertKit form (replace YOUR_FORM_ID with your actual form ID)
-      await fetch('https://app.convertkit.com/forms/YOUR_FORM_ID/subscriptions', {
+      await fetch('https://app.convertkit.com/forms/8958357/subscriptions', {
         method: 'POST',
         body: formData,
         mode: 'no-cors'
