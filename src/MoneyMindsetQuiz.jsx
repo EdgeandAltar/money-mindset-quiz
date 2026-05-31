@@ -513,7 +513,7 @@ const MoneyMindsetQuiz = () => {
               </p>
               {/* Primary CTA */}
               <a
-                href="https://buy.stripe.com/4gM5kF6OG4GA8doeaX1ZS04"
+                href="https://www.edgeandaltar.com/money-magic-journal"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cta-button"
@@ -523,7 +523,7 @@ const MoneyMindsetQuiz = () => {
               </a>
               {/* Secondary premium link */}
               <a
-                href="https://app.edgeandaltar.com"
+                href="https://www.edgeandaltar.com/spell-library"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ display:'inline-block', fontFamily:"'Manrope',sans-serif", fontSize:'15px', color:resultTypes[result].color, textDecoration:'underline', textUnderlineOffset:'3px', padding:'18px 0', verticalAlign:'middle' }}
